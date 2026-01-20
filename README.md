@@ -1,0 +1,1 @@
+There are two HTML files named Bill and Billing. The Billing file is an improved version of the original Bill file. In the updated version, clicking the Bill button takes the user directly to the print view. The billing process now accepts a discount value when generating the bill, and the final bill is displayed in a clear, organized format that is optimized for printing.
