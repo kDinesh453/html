@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bill Counter</title>
+  <style>
+    .quantity-selector {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .quantity-selector input {
+      width: 50px;
+      text-align: center;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .quantity-selector button {
+      width: 30px;
+      height: 30px;
+      font-size: 20px;
+      background-color: #f0f0f0;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .quantity-selector button:hover {
+      background-color: #dcdcdc;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 8px 12px;
+    }
+
+    .center {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    #billOutput {
+      padding: 20px;
+      background-color: white;
+      margin: 30px auto;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+
+<h1><center><strong>WELCOME!</strong></center></h1>
+<h2><center><strong>ENJOY THE DAY WITH LOT OF TASTIES</strong></center></h2>
+
+<table align="center">
+  <tr><td>PEPSI</td>
+    <td><div class="quantity-selector">
+      <button onclick="changeQuantity('pepsi', -1)">−</button>
+      <input type="text" id="pepsi" value="0" readonly>
+      <button onclick="changeQuantity('pepsi', 1)">+</button>
+    </div></td></tr>
+
+  <tr><td>ARTOS</td>
+    <td><div class="quantity-selector">
+      <button onclick="changeQuantity('artos', -1)">−</button>
+      <input type="text" id="artos" value="0" readonly>
+      <button onclick="changeQuantity('artos', 1)">+</button>
+    </div></td></tr>
+
+  <tr><td>MAAZA</td>
+    <td><div class="quantity-selector">
+      <button onclick="changeQuantity('maaza', -1)">−</button>
+      <input type="text" id="maaza" value="0" readonly>
+      <button onclick="changeQuantity('maaza', 1)">+</button>
+    </div></td></tr>
+
+
+  <tr><td>SPRITE</td>
+    <td><div class="quantity-selector">
+      <button onclick="changeQuantity('sprite', -1)">−</button>
+      <input type="text" id="sprite" value="0" readonly>
+      <button onclick="changeQuantity('sprite', 1)">+</button>
+    </div></td></tr>
+
+  <tr><td>CADBURY</td>
+    <td><div class="quantity-selector">
+      <button onclick="changeQuantity('cadbury', -1)">−</button>
+      <input type="text" id="cadbury" value="0" readonly>
+      <button onclick="changeQuantity('cadbury', 1)">+</button>
+    </div></td></tr>
+
+  <tr><td>MARS WRIGLEY CONFECTIONARY</td>
+    <td><div class="quantity-selector">
+      <button onclick="changeQuantity('mars', -1)">−</button>
+      <input type="text" id="mars" value="0" readonly>
+      <button onclick="changeQuantity('mars', 1)">+</button>
+    </div></td></tr>
+
+  <tr><td>BADAM MILK SHAKE</td>
+    <td><div class="quantity-selector">
+      <button onclick="changeQuantity('badham', -1)">−</button>
+      <input type="text" id="badham" value="0" readonly>
+      <button onclick="changeQuantity('badham', 1)">+</button>
+    </div></td></tr>
+
+  <tr><td>MILK SHAKE</td>
+    <td><div class="quantity-selector">
+      <button onclick="changeQuantity('milk', -1)">−</button>
+      <input type="text" id="milk" value="0" readonly>
+      <button onclick="changeQuantity('milk', 1)">+</button>
+    </div></td></tr>
+
+  <tr><td>CHOCOLATE MILK SHAKE</td>
+    <td><div class="quantity-selector">
+      <button onclick="changeQuantity('shake', -1)">−</button>
+      <input type="text" id="shake" value="0" >
+      <button onclick="changeQuantity('shake', 1)">+</button>
+    </div></td></tr>
+<tr><td>DISCOUNT</td><td><input type="number" id="discont"></td></tr>
+</table>
+
+<div class="center">
+  <button onclick="generateBill()">BILL</button>
+</div>
+
+<script>
+  function changeQuantity(id, delta) {
+    const input = document.getElementById(id);
+    let value = parseInt(input.value) || 0;
+    value = Math.max(0, value + delta);
+    input.value = value;
+  }
+
+  function generateBill() {
+    const prices = {
+      pepsi: 35, artos: 45, maaza: 40, sprite: 35,
+      cadbury: 160, mars: 390, badham: 50, milk: 45, shake: 50
+    };
+
+    const names = {
+      pepsi: "PEPSI", artos: "ARTOS", maaza: "MAAZA", sprite: "SPRITE",
+      cadbury: "CADBURY", mars: "MARS WRIGLEY CONFECTIONARY",
+      badham: "BADAM MILK SHAKE", milk: "MILK SHAKE", shake: "CHOCOLATE MILK SHAKE"
+    };
+
+    let total = 0;
+    const rows = [];
+
+    for (let id in prices) {
+      const qty = Number(document.getElementById(id).value);
+      if (qty > 0) {
+        const amount = qty * prices[id];
+        total += amount;
+        rows.push(`<tr><td>${names[id]}</td><td>${qty}</td><td>${amount}</td></tr>`);
+      }
+    }
+
+    if (rows.length === 0) {
+      alert("Please select at least one item.");
+      return;
+    }
+    var a=Number(document.getElementById("discont").value);
+    const discount = Math.floor(total * (a / 100));
+    const grandTotal = total - discount;
+    const now = new Date();
+    const billNumber = Math.floor(1000 + Math.random() * 9000);
+
+    const billHTML = `
+      <center>
+        <h2>SL NO: ${billNumber}</h2>
+        <h3>${now.toLocaleString()}</h3>
+        <div id="bill-section">
+          <table border="1" cellpadding="10" cellspacing="0">
+            <tr><th>ITEM</th><th>QUANTITY</th><th>AMOUNT</th></tr>
+            ${rows.join('')}
+            <tr><td colspan="2"><b>TOTAL</b></td><td><b>${total}</b></td></tr>
+            <tr><td colspan="2"><b>DISCOUNT </b></td><td><b>${discount}</b></td></tr>
+            <tr><td colspan="2"><b>GRAND TOTAL</b></td><td><b>${grandTotal}</b></td></tr>
+          </table>
+          <br><h3>THANK YOU FOR VISITING!</h3>
+        </div>
+      </center>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
+      <script>
+        window.onload = function() {
+          const target = document.getElementById("bill-section");
+          setTimeout(() => {
+            html2canvas(target).then(canvas => {
+              const link = document.createElement('a');
+              const filename = "Bill_" + new Date().toISOString().replace(/[:.]/g, "_") + ".png";
+              link.download = filename;
+              link.href = canvas.toDataURL("image/png");
+              link.click();
+              window.print();
+            });
+          }, 1000);
+        };
+      <\/script>
+    `;
+
+    const billWindow = window.open("", "_blank");
+    billWindow.document.write(`
+      <html>
+      <head><title>Bill</title>
+      <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        table, th, td { border: 1px solid black; border-collapse: collapse; }
+        th, td { padding: 8px 12px; text-align: center; }
+      </style>
+      </head>
+      <body>${billHTML}</body>
+      </html>
+    `);
+    billWindow.document.close();
+  }
+</script>
+
+</body>
+</html>
